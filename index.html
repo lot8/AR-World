@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+button{
+height:40px;
+width:100px;
+position:bottom left;
+}
+</style>
+</head>
+<body>
+<script>
+var audio = new Audio('audio_file.mp3');
+audio.play();
+
+function play() {
+  var audio = new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3');
+  audio.play();
+}
+</script>
+
+<button onclick="play()" >Play Audio</button>
+</body>
+</html>
