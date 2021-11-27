@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>XR Street</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- import the webpage's stylesheet -->
+	<link rel="stylesheet" href="./style.css">
+
+	<script>
+		// WebXR requires HTTPS, so the site doesn't work if someone manually enters
+		// the URL and ends up using HTTP. To work around this, force redirect from
+		// http to https for non-localhost addresses.
+		if (window.location.protocol == "http:" &&
+				window.location.hostname != "localhost" &&
+				window.location.hostname != "127.0.0.1" &&
+				window.location.hostname != "[::1]") {
+			//window.location = window.location.href.replace('http:', 'https:');
+		}
+	</script>
+
+	<!-- import the webpage's javascript files -->
+  <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@e416f25/dist/aframe-master.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+	<script
+			src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+
+  <script src="https://ghcdn.rawgit.org/chenzlabs/aframe-ar/fb69413/dist/aframe-ar.min.js"></script>
+  
+	<script src="./main.js"></script>
+  
+  <script>
+
+    // AFRAME no longer sends intersection event every time intersection changes position;
+    // this component is modified from docs to move a different entity than the one hit.
+    AFRAME.registerComponent('raycaster-move', {
+        schema: {
+            target: {type: 'selector'}
+        },
+        init: function () {
+            // Use events to figure out what raycaster is listening so we don't have to
+            // hardcode the raycaster.
+            this.el.addEventListener('raycaster-intersected', evt => {
+                this.raycaster = evt.detail.el;
+            });
+            this.el.addEventListener('raycaster-intersected-cleared', evt => {
+                this.raycaster = null;
+            });
+        },
+        update: function (oldData) {
+            //
+        },
+        tick: function () {
+            if (!this.raycaster) { return; }  // Not intersecting.
+
+            let intersection = this.raycaster.components.raycaster.getIntersection(this.el);
+            if (!intersection) { return; }
+            //console.log(intersection.point);
+            this.data.target.setAttribute("position", intersection.point);
+        }
+    });
+
+    window.addEventListener('click', function () {
+      // Put the logo where the mark is.
+      let position = document.querySelector('#mark').getAttribute('position');      
+      document.getElementById('dino').setAttribute('position', position);
+      document.getElementById('light').setAttribute('position', {
+        x: (position.x - 2),
+        y: (position.y + 4),
+        z: (position.z + 2)
+      });
+    });
+
+  </script>
+
+<script type="text/javascript">
+function autoplay(){
+    var r =confirm("Would You Like To AutoPlay Music?");
+    if (r == true) {
+        var audio = new Audio('Black01.mp3');
+        audio.play();
+    }
+  }
+</script>
+<script>autoplay();</script>
+
+
+
+
+</head>
+<body>
+
+<audio id="audio" controls="" style="width: 50%;"><source src="Black01.mp3" type="audio/mpeg">Please update your browser does not support the audio element.</audio>
+
+<a-scene ar="worldSensing:true" raycaster-move="target:#mark">
+	<a-assets>
+		<!-- Model source: https://github.com/dataarts/3-dreams-of-black
+         https://github.com/mrdoob/three.js/tree/dev/examples/models/gltf -->
+    <a-asset-item id="horse" src="https://cdn.glitch.com/7a53a7ba-20e0-4e18-959a-e52f16c3d173%2FHorse.glb?v=1584894018510"></a-asset-item>
+    <a-asset-item id="flamingo" src="https://cdn.glitch.com/7a53a7ba-20e0-4e18-959a-e52f16c3d173%2FFlamingo.glb?v=1584894579519"></a-asset-item>
+    <a-asset-item id="storch" src="https://cdn.glitch.com/7a53a7ba-20e0-4e18-959a-e52f16c3d173%2FStork.glb?v=1584894574856"></a-asset-item>
+    <a-asset-item id="parrot" src="https://cdn.glitch.com/7a53a7ba-20e0-4e18-959a-e52f16c3d173%2FParrot.glb?v=1584894562595"></a-asset-item>
+		<a-asset-item id="reticle"
+					  src="https://cdn.glitch.com/4be0fb1b-d714-4a6c-8cb4-a80f530ccd2e%2Freticle.glb?v=1584790912426"
+					  response-type="arraybuffer"></a-asset-item>
+	</a-assets>
+  
+  <!-- Use AR raycaster, and set raycaster to ignore all A-Frame objects like logos. -->
+  <a-entity ar-raycaster raycaster="objects:none"></a-entity>
+
+	<a-camera position="0 1.2 0"></a-camera>
+
+	<!-- Environment for 2D and VR viewing. It's auto-hidden in AR mode. -->
+	<a-entity environment="preset: default; lighting: none; shadow: none; lightPosition: 0 10 0"
+			  hide-in-ar-mode></a-entity>
+
+	<a-entity id="dino" position="0 0 0" scale="1 1 1">
+    <!-- horses -->
+    <a-entity position="0 0 -30" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="property: position; to: 0 0 30; dur: 20000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="-2 0 -35" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer="timeScale: 0.95"
+          animation="property: position; to: -2 0 25; dur: 19000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="1.5 0 -32" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="property: position; to: 1.5 0 28; dur: 20000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="3 0 -37" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="property: position; to: 3 0 23; dur: 21000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="-3 0 -40" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer="timeScale: 1.15;"
+          animation="property: position; to: -3 0 20; dur: 20500; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+    <!-- horses2 -->
+    <a-entity position="1.5 0 -30" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="delay: 5000; property: position; to: 1.5 0 30; dur: 20000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="-2 0 -35" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer="timeScale: 0.95"
+          animation="delay: 5000; property: position; to: -2 0 25; dur: 19000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="0 0 -32" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="delay: 5000; property: position; to: 0 0 28; dur: 20000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="2 0 -37" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="delay: 5000; property: position; to: 2 0 23; dur: 21000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="-2 0 -40" rotation="0 0 0"
+				  gltf-model="#horse"
+          scale="0.01 0.01 0.01"
+				  animation-mixer="timeScale: 1.15;"
+          animation="delay: 5000; property: position; to: -2 0 20; dur: 20500; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+    <!-- birds -->
+    <a-entity position="0 3 -45" rotation="0 0 0"
+				  gltf-model="#flamingo"
+          scale="0.01 0.01 0.01"
+				  animation-mixer="timeScale: 1.05"
+          animation="property: position; to: 0 3 15; dur: 22000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="-2 3 -40" rotation="0 0 0"
+				  gltf-model="#flamingo"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="property: position; to: -2 3 20; dur: 20000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="2 3 -40" rotation="0 0 0"
+				  gltf-model="#parrot"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="property: position; to: 2 3 20; dur: 25000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="3 3 -35" rotation="0 0 0"
+				  gltf-model="#storch"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="property: position; to: 3 3 25; dur: 22000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+
+    <!-- birds2 -->
+    <a-entity position="0 3 -45" rotation="0 0 0"
+				  gltf-model="#flamingo"
+          scale="0.01 0.01 0.01"
+				  animation-mixer="timeScale: 1.05"
+          animation="delay: 5000; property: position; to: 0 3 15; dur: 22000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="2 3 -40" rotation="0 0 0"
+				  gltf-model="#flamingo"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="delay: 5000; property: position; to: 2 3 20; dur: 20000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="-3 3 -40" rotation="0 0 0"
+				  gltf-model="#parrot"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="delay: 5000; property: position; to: -3 3 20; dur: 25000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<a-entity position="-1.5 3 -35" rotation="0 0 0"
+				  gltf-model="#storch"
+          scale="0.01 0.01 0.01"
+				  animation-mixer
+          animation="delay: 5000; property: position; to: -1.5 3 25; dur: 22000; easing: linear; loop: true"
+				  shadow="cast: true; receive: false"></a-entity>
+		<!-- This shadow-receiving plane is only visible in AR mode.-->
+		<a-plane height="200" width="200" rotation="-90 0 0"
+				 shadow="receive: true"
+				 ar-shadows="opacity: 0.3"
+				 visible="false"></a-plane>
+
+	</a-entity>
+
+	<a-entity light="type: ambient; intensity: 1;
+              color: #f0fbff;"></a-entity>
+	<a-light type="directional"
+			 light="castShadow: true;
+              color: #f0fbff;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -20;
+                      shadowCameraRight: 20;
+                      shadowCameraBottom: -20;
+                      shadowCameraTop: 20;"
+			 id="light"
+       intensity="1"
+			 target="dino2"
+			 position="4 10 2">
+	</a-light>
+
+	<a-entity id="mark" gltf-model="#reticle" scale="0.8 0.8 0.8"></a-entity>
+</a-scene>
+
+<script>
+	function setSize(scale) {
+		document.getElementById('dino').setAttribute('scale', {x: scale, y: scale, z: scale});
+	}
+	document.getElementById('btn_full').onclick = setSize.bind(this, 1);
+	document.getElementById('btn_half').onclick = setSize.bind(this, 0.5);
+	document.getElementById('btn_quarter').onclick = setSize.bind(this, 0.0625);
+
+  window.addEventListener('touchstart', function () {
+    let position = document.querySelector('#mark').getAttribute('position');
+
+    document.getElementById('dino').setAttribute('position', position);
+    document.getElementById('light').setAttribute('position', {
+      x: (position.x - 2),
+      y: (position.y + 4),
+      z: (position.z + 2)
+    });
+  });
+
+  // TODO: remove the need for this rather ugly hack for WebXR Viewer
+  setTimeout(function() {
+    var arscene = document.querySelector("[ar]");
+    if (arscene.components.ar.getSource().name == 'mozilla-xr-ar') {
+      arscene.addState('ar-mode');
+      arscene.emit('enter-vr', {target: arscene});
+    }
+  }, 500);
+</script>
+</body>
+</html>
