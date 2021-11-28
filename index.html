@@ -91,10 +91,10 @@ function autoplay(){
 
 </head>
 <body>	
-<iframe src="silence.mp3" allow="autoplay" id="audio" style="display: none"></iframe>
+<iframe src="silence.mp3" allow="autoplay" id="audio"></iframe>
 
 <!--<audio id="audio" controls="" style="width: 50%;"><source src="Black01.mp3" type="audio/mpeg">Please update your browser does not support the audio element.</audio>-->
-<audio id="player" autoplay loop>
+<audio id="player" autoplay controls>
     <source src="Black01.mp3" type="audio/mp3">
 </audio>
 <a-scene ar="worldSensing:true" raycaster-move="target:#mark">
