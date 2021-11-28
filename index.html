@@ -80,29 +80,12 @@
 
 </head>
 <body>	
-	<!--<audio id="divAudio" autoplay>
-   <source src="Black01.mp3" type="audio/mp3">
-</audio>
-
-<script>
-   var vAudio = document.getElementById("divAudio");
-   var hasInit = false;
-   function playMusic()
-   {
-      if(!hasInit)
-      {
-          hasInit = true;
-          vAudio.play();
-      }
-   }
-</script>-->
 	
-<div onclick="playMusic()">
 	
 <!--<audio id="audio" controls="" style="width: 50%;"><source src="Black01.mp3" type="audio/mpeg">Please update your browser does not support the audio element.</audio>-->
-<!--<audio id="audio" autoplay controls>
+<audio id="audio" controls>
       <source src="Black01.mp3">
-</audio>-->
+</audio>
 	
 <a-scene ar="worldSensing:true" raycaster-move="target:#mark">
 	<a-assets>
@@ -286,7 +269,7 @@
       z: (position.z + 2)
     });
   });
-</div>
+
   // TODO: remove the need for this rather ugly hack for WebXR Viewer
   setTimeout(function() {
     var arscene = document.querySelector("[ar]");
@@ -295,7 +278,6 @@
       arscene.emit('enter-vr', {target: arscene});
     }
   }, 500);
-</script>
-	
+</script>	
 </body>
 </html>
