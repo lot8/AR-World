@@ -80,14 +80,29 @@
 
 </head>
 <body>	
+	<audio id="divAudio">
+   <source src="music.mp3" type="audio/mp3">
+</audio>
+
+<script>
+   var vAudio = document.getElementById("divAudio");
+   var hasInit = false;
+   function playMusic()
+   {
+      if(!hasInit)
+      {
+          hasInit = true;
+          vAudio.play();
+      }
+   }
+</script>
 	
-	
-<!--<audio id="audio" controls="" style="width: 50%;"><source src="Black01.mp3" type="audio/mpeg">Please update your browser does not support the audio element.</audio>-->
+
 <audio id="audio" controls>
       <source src="Black01.mp3">
 </audio>
 	
-<a-scene ar="worldSensing:true" raycaster-move="target:#mark">
+<a-scene ar="worldSensing:true" raycaster-move="target:#mark" onclick="playMusic()" >
 	<a-assets>
 		<!-- Model source: https://github.com/dataarts/3-dreams-of-black
          https://github.com/mrdoob/three.js/tree/dev/examples/models/gltf -->
