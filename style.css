@@ -25,9 +25,8 @@ div#text {
 }
 
 #audio{
-position: absolute;
-	margin: auto;
+        position: absolute;
 	padding: 10px;
-z-index: 1;
+        z-index: 1;
 
 }
