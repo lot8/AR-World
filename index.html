@@ -24,6 +24,8 @@
 	<!-- import the webpage's javascript files -->
   <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@e416f25/dist/aframe-master.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+	<script src="https://pixijs.download/v6.2.0/pixi.min.js"></script>
+	<script scr="https://sound.pixijs.download/v4.0.6/pixi-sound.js"></script>
 	<script
 			src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
 
@@ -75,29 +77,37 @@
 
   </script>
 
-<!--<script type="text/javascript">
-function autoplay(){
-    var r =confirm("Would You Like To AutoPlay Music?");
-    if (r == true) {
-        var audio = new Audio('Black01.mp3');
-        audio.play();
-    }
-  }
-</script>
-<script>autoplay();</script>-->
 <script>
-window.onload = function() {
-  var context = new AudioContext();
-}
-</script>
 
+            PIXI.sound.Sound.from({
+            url: 'audios/tuto.mp3',
+            loop:true,
+            preload: true,
+            loaded: function(err, sound) {
+                    sound.play();
+
+            document.querySelector("#paused").addEventListener('click', function() {
+            const paused = PIXI.sound.togglePauseAll();
+
+            this.className = this.className.replace(/\b(on|off)/g, '');
+            this.className += paused ? 'on' : 'off';
+
+            });
+            }
+            });
+
+</script>
 
 
 </head>
 <body>	
-	<iframe src="https://lot8.github.io/AR-World/index.html" allow="autoplay">
-<iframe src="Black01.mp3" allow="autoplay" id="audio"></iframe>
-
+	
+	
+	<button class="btn1 btn-lg off" id="paused">
+    <span class="glyphicon glyphicon-pause off"></span>
+    <span class="glyphicon glyphicon-play on"></span>
+</button>
+	
 <!--<audio id="audio" controls="" style="width: 50%;"><source src="Black01.mp3" type="audio/mpeg">Please update your browser does not support the audio element.</audio>-->
 <audio autoplay>
       <source src="Black01.mp3">
