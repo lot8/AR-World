@@ -103,27 +103,28 @@ function play() {
 
 	<style>
 #right {
-  position: fixed; 
+  position: fixed;
   right: 50%;
   left: 50%;
-  top: 30%;
+  top: 50%;
   transform: translate(-50%, -50%);
-  width: 320px;
+  width: 70%;
+  max-width: 280px;
   padding: 10px;
-  background: #dbe3bf;
+  background: #ededed;
   border-radius: 10px;
   z-index: 1;
+
 }
 .btn{
-  float: right;
-  margin: 6px;
   border: none;
   font-size: 0.9em;
-  border-radius: 6px;
   padding: 8px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
+  width: 49%;
+  }
+ p.clear {
+  clear: both;
+}	
 
 </style>
 	
@@ -135,8 +136,8 @@ function play() {
 	
 	<div id="right">
 <img style="padding-left: 10px;padding-top: 10px;" src="speaker.png" alt="spk"/>
-<p style="padding-left: 10px;">Would You Like To AutoPlay Music?</p>
-<p><button class="btn" onclick="myFunction1()">Abbrechen</button>
+<p style="float: right; margin-right: 3px;">Would You Like To AutoPlay Music?</p>
+<p><button class="btn" onclick="myFunction1()">Cancel</button>
 	<button style="background:#4b7bee;color:#fff;"class="btn" onclick="myFunction()">OK</button></p>
 </div>
 
